@@ -1,0 +1,65 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="image-container">
+    <img src="{% static 'main/bg-img.jpg' %}" alt="Mountain View">
+    <div class="overlay">
+        <div class="subtitle-container">
+            <svg width="74" height="4" viewBox="0 0 74 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.728883 3.38V0.936H15.2889V3.38H0.728883ZM15.2269 3.38V0.936H29.7869V3.38H15.2269ZM29.725 3.38V0.936H44.285V3.38H29.725ZM44.223 3.38V0.936H58.783V3.38H44.223ZM58.7211 3.38V0.936H73.2811V3.38H58.7211Z" fill="white"/>
+            </svg>
+            <p class="subtitle">Красота в деталях</p>
+        </div>
+        <h1>ТОКИО <span id="heart" class="heart">
+            <svg width="90" height="90" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="#9B2D30" stroke-width="2"/>
+            </svg>
+        </span></h1>
+    </div>
+</div>
+
+
+<!-- Новый блок: Культура и традиции -->
+<div class="content-block">
+    <div class="image-text-container">
+        <img src="{% static 'main/tradition.png' %}" alt="Culture and Tradition">
+        <div class="text-container">
+            <div class="heading">
+                <svg width="74" height="4" viewBox="0 0 74 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.728883 3.38V0.936H15.2889V3.38H0.728883ZM15.2269 3.38V0.936H29.7869V3.38H15.2269ZM29.725 3.38V0.936H44.285V3.38H29.725ZM44.223 3.38V0.936H58.783V3.38H44.223ZM58.7211 3.38V0.936H73.2811V3.38H58.7211Z" fill="#B03337"/>
+                </svg>
+                <h2 class="text-h2">Культура и традиции</h2>
+            </div>
+            <p><strong>Чем примечателен город?</strong> <strong style="font-size: 1.2rem">Токио, столица Японии, поражает контрастом современных небоскребов и древних храмов. Это один из самых динамичных и многолюдных городов мира, с уникальными достопримечательностями, такими как Императорский дворец и храм Сенсо-дзи.</strong></p>
+        </div>
+    </div>
+</div>
+
+<!-- Вставка новой фотографии -->
+<div class="wide-image-container">
+    <img src="{% static 'main/new-image.png' %}" alt="Yokohama Ferris Wheel">
+</div>
+
+<!-- Новый блок: Искусство и кино -->
+<div class="content-block">
+    <div class="image-text-container">
+         <img src="{% static 'main/art.png' %}" alt="Art and Cinema">
+        <div class="text-container">
+            <div class="heading">
+                <svg width="74" height="4" viewBox="0 0 74 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.728883 3.38V0.936H15.2889V3.38H0.728883ZM15.2269 3.38V0.936H29.7869V3.38H15.2269ZM29.725 3.38V0.936H44.285V3.38H29.725ZM44.223 3.38V0.936H58.783V3.38H44.223ZM58.7211 3.38V0.936H73.2811V3.38H58.7211Z" fill="#B03337"/>
+                </svg>
+                <h2 class="text-h2"><h2>Искусство жизни</h2></h2>
+            </div>
+            <p><strong>Почему именно Япония?</strong> <strong style="font-size: 1.2rem"> Япония - страна, где традиции искусно переплетаются с новыми технологиями. Современное искусство и кино Японии поражают своей глубиной и разнообразием. Местные фестивали и культурные мероприятия дают уникальную возможность узнать больше о культуре этой удивительной страны.</strong></p>
+        </div>
+    </div>
+</div>
+
+<!-- Новый блок: Отзывы -->
+<div class="content-block reviews">
+    <h2>Были в Токио? Оставьте отзыв!</h2>
+</div>
+
+{% endblock %}

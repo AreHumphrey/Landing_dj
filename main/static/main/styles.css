@@ -1,0 +1,152 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ECE0EE;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    top: 8%; /* Позиционирование текста выше */
+    left: 10%;
+    text-align: left;
+    color: #fff;
+}
+
+.subtitle-container {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.5rem; /* Увеличение размера текста */
+    margin-left: 0.5rem;
+    color: #fff;
+}
+
+h1 {
+    font-size: 6rem;
+    margin: 0;
+    color: #9B2D30;
+}
+
+.heart {
+    display: inline-block;
+    width: 90px; /* Увеличение размера иконки сердца */
+    height: 90px;
+    cursor: pointer;
+    vertical-align: middle;
+    transform: translateY(-20%); /* Поднятие иконки сердца выше */
+}
+
+.heart.filled svg path {
+    fill: #9B2D30;
+    stroke: none;
+}
+
+.image-container::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30%; /* Adjust the height as needed */
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ECE0EE);
+}
+
+.content-block {
+    padding: 50px 10%;
+    background-color: #ECE0EE;
+    color: #333;
+}
+
+.image-text-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.image-text-container img {
+    max-width: 400px; /* Ограничение максимальной ширины изображения */
+    margin-right: 300px; /* Отступ между текстом и изображением */
+    border-radius: 8px;
+}
+
+.image-text-container.reverse {
+    flex-direction: row-reverse;
+}
+
+.text-container .heading {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.text-container .heading svg {
+    margin-right: 10px;
+}
+
+.text-container h2 {
+    font-size: 2rem; /* Размер шрифта для заголовков */
+    color: #B03337;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.text-h2 {
+    font-size: 2rem;
+}
+
+.text-container p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.text-container p strong {
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.reviews {
+    text-align: center;
+    background-color: #D9B3C4;
+    padding: 50px 10%;
+}
+
+.reviews h2 {
+    font-size: 2rem;
+    color: #fff;
+}
+
+.wide-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+    background-color: #ECE0EE;
+}
+
+.wide-image-container img {
+    max-width: 90%;
+    height: auto;
+    border-radius: 8px;
+}
