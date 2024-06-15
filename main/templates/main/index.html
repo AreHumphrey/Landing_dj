@@ -59,7 +59,34 @@
 
 <!-- Новый блок: Отзывы -->
 <div class="content-block reviews">
-    <h2>Были в Токио? Оставьте отзыв!</h2>
+    <div class="subtitle-container">
+            <svg width="74" height="4" viewBox="0 0 74 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.728883 3.38V0.936H15.2889V3.38H0.728883ZM15.2269 3.38V0.936H29.7869V3.38H15.2269ZM29.725 3.38V0.936H44.285V3.38H29.725ZM44.223 3.38V0.936H58.783V3.38H44.223ZM58.7211 3.38V0.936H73.2811V3.38H58.7211Z" fill="white"/>
+            </svg>
+            <p class="subtitle">Были в Токио? Оставьте отзыв!</p>
+    </div>
+
+</div>
+
+
+<!-- Новый блок: Отзывы -->
+<div class="reviews-block">
+    <form id="review-form">
+        <div class="input-group">
+            <textarea placeholder="Ваш отзыв" id="review" required></textarea>
+            <button type="submit">Отправить</button>
+        </div>
+    </form>
+</div>
+
+<!-- Блок со всеми отзывами -->
+<div class="reviews-list">
+    <h2>Остальные отзывы</h2>
+    <div id="reviews-container">
+
+    </div>
 </div>
 
 {% endblock %}
+
+

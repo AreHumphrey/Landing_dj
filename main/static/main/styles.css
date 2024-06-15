@@ -127,9 +127,9 @@ h1 {
 }
 
 .reviews {
-    text-align: center;
-    background-color: #D9B3C4;
-    padding: 50px 10%;
+    text-align: -moz-left;
+    background-color: #B97A95;
+    padding: 35px 10%;
 }
 
 .reviews h2 {
@@ -149,4 +149,91 @@ h1 {
     max-width: 90%;
     height: auto;
     border-radius: 8px;
+}
+
+
+.reviews-block {
+    text-align: center;
+    background-color: #ECE0EE;
+    padding: 50px 10%;
+}
+
+.reviews-block .input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reviews-block textarea {
+    width: 100%;
+    max-width: 1000px;
+    padding: 10px;
+    border: 1px solid #B03337;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #ECE0EE;
+}
+
+.reviews-block button {
+    background-color: #B97A95;
+    color: #fff;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 100px;
+    margin-bottom: -5px;
+}
+
+.reviews-block button:hover {
+    background-color: #956278;
+}
+
+.reviews-list {
+    padding: 50px 10%;
+    background-color: #ECE0EE;
+}
+
+.reviews-list h2 {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+#reviews-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 60px;
+    justify-content: center;
+    background-color: #ECE0EE;
+    margin-bottom: 60px;
+}
+
+.review {
+    background-color: #ECE0EE;
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid #B03337;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    flex: 1 1 calc(50% - 40px);
+    box-sizing: border-box;
+}
+
+.review-icon {
+    margin-right: 20px;
+}
+
+.review-content {
+    max-width: calc(100% - 90px);
+}
+
+.review-content strong {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.review-content p {
+    margin: 0;
 }
