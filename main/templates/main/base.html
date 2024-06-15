@@ -13,5 +13,29 @@
         {% endblock %}
     </main>
     <script src="{% static 'main/scripts.js' %}"></script>
+    <div id="modal" class="modal">
+        <div id="login-form" class="modal-content">
+            <h2>Вход</h2>
+            <label for="email">Почта</label>
+            <input type="text" id="email" name="email">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password">
+            <button id="login-button">Войти</button>
+            <p>Нет аккаунта? <a href="#" id="show-register">Зарегистрируйтесь!</a></p>
+        </div>
+        <div id="register-form" class="modal-content">
+            <h2>Регистрация</h2>
+            <label for="name">ФИО</label>
+            <input type="text" id="name" name="name">
+            <label for="email">Почта</label>
+            <input type="text" id="register-email" name="email">
+            <label for="password">Пароль</label>
+            <input type="password" id="register-password" name="password">
+            <label for="confirm-password">Повторите пароль</label>
+            <input type="password" id="confirm-password" name="confirm-password">
+            <button id="register-button">Зарегистрироваться</button>
+            <p>Уже есть аккаунт? <a href="#" id="show-login">Войдите!</a></p>
+        </div>
+    </div>
 </body>
 </html>

@@ -20,7 +20,7 @@ body {
 
 .overlay {
     position: absolute;
-    top: 8%; /* Позиционирование текста выше */
+    top: 8%;
     left: 10%;
     text-align: left;
     color: #fff;
@@ -34,7 +34,7 @@ body {
 }
 
 .subtitle {
-    font-size: 1.5rem; /* Увеличение размера текста */
+    font-size: 1.5rem;
     margin-left: 0.5rem;
     color: #fff;
 }
@@ -47,11 +47,11 @@ h1 {
 
 .heart {
     display: inline-block;
-    width: 90px; /* Увеличение размера иконки сердца */
+    width: 90px;
     height: 90px;
     cursor: pointer;
     vertical-align: middle;
-    transform: translateY(-20%); /* Поднятие иконки сердца выше */
+    transform: translateY(-20%);
 }
 
 .heart.filled svg path {
@@ -65,7 +65,7 @@ h1 {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 30%; /* Adjust the height as needed */
+    height: 30%;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ECE0EE);
 }
 
@@ -236,4 +236,97 @@ h1 {
 
 .review-content p {
     margin: 0;
+}
+
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.modal-content input {
+    width: calc(100% - 40px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #B03337;
+    border-radius: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: #B03337;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 20px;
+}
+
+.modal-content button:hover {
+    background-color: #A12C32;
+}
+
+.modal-content p {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.modal-content a {
+    color: #B03337;
+    text-decoration: none;
+}
+
+.modal-content a:hover {
+    text-decoration: underline;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }

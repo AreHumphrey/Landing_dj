@@ -19,7 +19,6 @@
     </div>
 </div>
 
-
 <!-- Новый блок: Культура и традиции -->
 <div class="content-block">
     <div class="image-text-container">
@@ -65,28 +64,62 @@
             </svg>
             <p class="subtitle">Были в Токио? Оставьте отзыв!</p>
     </div>
-
 </div>
-
 
 <!-- Новый блок: Отзывы -->
 <div class="reviews-block">
     <form id="review-form">
         <div class="input-group">
             <textarea placeholder="Ваш отзыв" id="review" required></textarea>
-            <button type="submit">Отправить</button>
+            <button type="submit" id="submit-btn">Отправить</button>
         </div>
     </form>
+</div>
+
+<!-- Модальное окно -->
+<div id="modal" class="modal">
+    <div id="login-form" class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Вход</h2>
+        <label for="email">Почта</label>
+        <input type="text" id="email" name="email">
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password">
+        <button id="login-button">Войти</button>
+        <p>Нет аккаунта? <a href="#" id="show-register">Зарегистрируйтесь!</a></p>
+    </div>
+    <div id="register-form" class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Регистрация</h2>
+        <label for="name">ФИО</label>
+        <input type="text" id="name" name="name">
+        <label for="email">Почта</label>
+        <input type="text" id="register-email" name="email">
+        <label for="password">Пароль</label>
+        <input type="password" id="register-password" name="password">
+        <label for="confirm-password">Повторите пароль</label>
+        <input type="password" id="confirm-password" name="confirm-password">
+        <button id="register-button">Зарегистрироваться</button>
+        <p>Уже есть аккаунт? <a href="#" id="show-login">Войдите!</a></p>
+    </div>
+    <div id="review-modal-content" class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Ваш отзыв отправлен!</h2>
+        <p>Спасибо за ваш отзыв. Он будет опубликован после проверки.</p>
+    </div>
+    <div id="like-modal-content" class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Спасибо за обратную связь!</h2>
+        <p>Нам важно ваше мнение.</p>
+    </div>
 </div>
 
 <!-- Блок со всеми отзывами -->
 <div class="reviews-list">
     <h2>Остальные отзывы</h2>
     <div id="reviews-container">
-
+        <!-- Отзывы будут добавлены сюда через JavaScript -->
     </div>
 </div>
 
 {% endblock %}
-
-

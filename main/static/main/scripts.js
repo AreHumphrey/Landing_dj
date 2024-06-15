@@ -1,26 +1,67 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const heart = document.getElementById('heart');
+    const modal = document.getElementById("modal");
+    const loginForm = document.getElementById("login-form");
+    const registerForm = document.getElementById("register-form");
+    const reviewModalContent = document.getElementById("review-modal-content");
+    const likeModalContent = document.getElementById("like-modal-content");
+    const submitBtn = document.getElementById("submit-btn");
+    const loginButton = document.getElementById("login-button");
+    const showRegisterLink = document.getElementById("show-register");
+    const showLoginLink = document.getElementById("show-login");
+    const closeButtons = document.getElementsByClassName("close");
+    const reviewTextarea = document.getElementById("review");
 
-    heart.addEventListener('click', function() {
-        if (heart.classList.contains('filled')) {
-            heart.classList.remove('filled');
-            heart.innerHTML = `
-                <svg width="90" height="90" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="#9B2D30" stroke-width="2"/>
-                </svg>
-            `;
-        } else {
-            heart.classList.add('filled');
-            heart.innerHTML = `
-                <svg width="90" height="90" viewBox="0 0 24 24" fill="#9B2D30" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-            `;
-        }
+    function showModal(content) {
+        modal.style.display = "block";
+        loginForm.style.display = "none";
+        registerForm.style.display = "none";
+        reviewModalContent.style.display = "none";
+        likeModalContent.style.display = "none";
+        content.style.display = "block";
+    }
+
+    heart.addEventListener('click', function () {
+        showModal(loginForm);
     });
-});
-document.addEventListener('DOMContentLoaded', function() {
-    // Тестовые данные для отображения отзывов
+
+    submitBtn.onclick = function (event) {
+        if (reviewTextarea.value.trim() !== "") {
+            event.preventDefault();
+            showModal(reviewModalContent);
+        }
+    };
+
+    loginButton.onclick = function () {
+        showModal(likeModalContent);
+        heart.innerHTML = `
+            <svg width="90" height="90" viewBox="0 0 24 24" fill="#9B2D30" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        `;
+    };
+
+    showRegisterLink.onclick = function () {
+        showModal(registerForm);
+    };
+
+    showLoginLink.onclick = function () {
+        showModal(loginForm);
+    };
+
+    for (let i = 0; i < closeButtons.length; i++) {
+        closeButtons[i].onclick = function () {
+            modal.style.display = "none";
+        };
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+
+    // Test reviews data for displaying reviews
     const testReviews = [
         {
             name: 'Иван Иванов',
@@ -32,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
 
-    // Функция для добавления отзывов на страницу
+    // Function for adding reviews to the page
     function addReview(reviewData) {
         const reviewElement = document.createElement('div');
         reviewElement.classList.add('review');
@@ -58,17 +99,17 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('reviews-container').appendChild(reviewElement);
     }
 
-    // Добавление тестовых данных на страницу
+    // Adding test data to the page
     testReviews.forEach(reviewData => {
         addReview(reviewData);
     });
 
-    // Обработка формы для добавления нового отзыва
-    document.getElementById('review-form').addEventListener('submit', function(event) {
+    // Handling form submission to add new review
+    document.getElementById('review-form').addEventListener('submit', function (event) {
         event.preventDefault();
-        const name = 'ФИО'; // Здесь можно взять имя из формы, если оно будет добавлено
+        const name = 'ФИО'; // You can take the name from the form if it will be added
         const review = document.getElementById('review').value;
-        addReview({ name, review });
+        addReview({name, review});
         document.getElementById('review-form').reset();
     });
 });
