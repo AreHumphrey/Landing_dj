@@ -18,12 +18,26 @@ body {
     object-fit: cover;
 }
 
+
+
+
 .overlay {
     position: absolute;
     top: 3%;
     left: 10%;
     text-align: left;
     color: #fff;
+    z-index: 2;
+}
+
+.text-overlay {
+    position: absolute;
+    bottom: 5%;
+    left: 10%;
+    color: #244420;
+    font-size: 1.5rem;
+    font-weight: bold;
+    z-index: 3;
 }
 
 .subtitle-container {
@@ -365,12 +379,12 @@ h1 {
     padding: 20px;
     margin: 10px;
     width: calc(50% - 70px);
-    height: 610px;
+    height: 650px;
     box-sizing: border-box;
 }
 
 .attraction img {
-    width: 100%;
+    height: 300px;
     border-radius: 10px;
     margin-bottom: 15px;
 }
