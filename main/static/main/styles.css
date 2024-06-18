@@ -171,7 +171,7 @@ h1 {
     border: 1px solid #335D2D;
     border-radius: 5px;
     font-size: 1rem;
-    background-color: #F0D8B4;
+    background-color: #F3E0C3;
 }
 
 .reviews-block button {
@@ -207,6 +207,7 @@ h1 {
     justify-content: center;
     background-color: #F0D8B4;
     margin-bottom: 60px;
+
 }
 
 .review {
@@ -329,4 +330,59 @@ h1 {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.separator {
+    margin: 50px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.attractions-block {
+    bbackground-color: #F0D8B4;
+    padding: 50px 10%;
+    text-align: center;
+
+}
+
+.attractions-block h2 {
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.attractions-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 40px;
+}
+
+.attraction {
+    background-color: #F3E0C3;
+    border: 1px solid #335D2D;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    width: calc(50% - 70px);
+    height: 610px;
+    box-sizing: border-box;
+}
+
+.attraction img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.attraction h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #335D2D;
+}
+
+.attraction p {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
 }
