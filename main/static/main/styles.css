@@ -19,7 +19,21 @@ body {
 }
 
 
+.social-icons {
+    position: absolute;
+    top: 10px;
+    right: -120%;
+    display: flex;
+    gap: 30px;
+}
 
+.social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 43px;
+}
 
 .overlay {
     position: absolute;
