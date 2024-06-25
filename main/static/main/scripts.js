@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     // Получение элементов из DOM
     const heart = document.getElementById('heart');
@@ -9,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const likeModalContent = document.getElementById("like-modal-content");
     const submitBtn = document.getElementById("submit-btn");
     const loginButton = document.getElementById("login-button");
+    const registerButton = document.getElementById("register-button");
     const showRegisterLink = document.getElementById("show-register");
     const showLoginLink = document.getElementById("show-login");
     const closeButtons = document.getElementsByClassName("close");
@@ -28,7 +28,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Обработчик события клика по элементу heart
     heart.addEventListener('click', function () {
-        showModal(loginForm);
+        heart.innerHTML = `
+            <svg width="90" height="90" viewBox="0 0 24 24" fill="#335D2D" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        `;
     });
 
     // Обработчик события клика по кнопке submitBtn
@@ -41,19 +45,65 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // Обработчик события клика по кнопке loginButton
-    loginButton.onclick = function () {
-        if (reviewToPost !== '') {
-            addReview({name: 'ФИО', review: reviewToPost});
-            reviewToPost = '';
-            document.getElementById('review-form').reset();
-            showModal(reviewModalContent);
+    loginButton.onclick = async function (event) {
+        event.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        const response = await fetch('/api/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('access_token', data.access);
+            localStorage.setItem('refresh_token', data.refresh);
+
+            if (reviewToPost !== '') {
+                addReview({ name: 'ФИО', review: reviewToPost });
+                reviewToPost = '';
+                document.getElementById('review-form').reset();
+                showModal(reviewModalContent);
+            } else {
+                showModal(likeModalContent);
+            }
         } else {
-            showModal(likeModalContent);
-            heart.innerHTML = `
-                <svg width="90" height="90" viewBox="0 0 24 24" fill="#335D2D" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-            `;
+            alert('Invalid credentials. Please try again.');
+        }
+    };
+
+    // Обработчик события клика по кнопке registerButton
+    registerButton.onclick = async function (event) {
+        event.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match.');
+            return;
+        }
+
+        const response = await fetch('/api/register/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, password })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('access_token', data.access);
+            localStorage.setItem('refresh_token', data.refresh);
+            showModal(loginForm);
+        } else {
+            alert('Registration failed. Please try again.');
         }
     };
 
@@ -85,19 +135,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const testReviews = [
         {
             name: 'Иван Иванов',
-            review: '\n' +
-                'Культура и традиции Улан-Удэ\n' +
-                'Чем примечателен город?\n' +
-                '\n' +
-                'Улан-Удэ, столица Республики Бурятия, впечатляет своим сочетанием современных зданий и древних буддийских храмов. Этот город является одним из самых уникальных и культурно насыщенных мест России, с достопримечательностями, такими как Иволгинский дацан и памятник Гэсэру.'
+            review: 'Культура и традиции Улан-Удэ впечатляют сочетанием современных зданий и древних буддийских храмов. Этот город является одним из самых уникальных и культурно насыщенных мест России.'
         },
         {
             name: 'Мария Петрова',
-            review: '\n' +
-                'Культура и традиции Улан-Удэ\n' +
-                'Чем примечателен город?\n' +
-                '\n' +
-                'Улан-Удэ, столица Республики Бурятия, впечатляет своим сочетанием современных зданий и древних буддийских храмов. Этот город является одним из самых уникальных и культурно насыщенных мест России, с достопримечательностями, такими как Иволгинский дацан и памятник Гэсэру.'
+            review: 'Улан-Удэ впечатляет своим сочетанием современных зданий и древних буддийских храмов. Этот город является одним из самых уникальных и культурно насыщенных мест России.'
         }
     ];
 
@@ -135,9 +177,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Обработчик события отправки формы отзыва
     document.getElementById('review-form').addEventListener('submit', function (event) {
         event.preventDefault();
-        const name = 'ФИО'; 
+        const name = 'ФИО';
         const review = document.getElementById('review').value;
-        addReview({name, review});
+        addReview({ name, review });
         document.getElementById('review-form').reset();
     });
 });
