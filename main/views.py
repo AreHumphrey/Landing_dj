@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from rest_framework import generics, permissions, serializers
-from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from drf_yasg.utils import swagger_auto_schema
@@ -10,6 +9,9 @@ from .forms import UserRegisterForm, UserLoginForm, ReviewForm
 from .models import Review
 from .serializers import UserSerializer, ReviewSerializer
 from django.contrib.auth import get_user_model
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 User = get_user_model()
 
@@ -105,3 +107,15 @@ class ReviewListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+@api_view(['POST'])
+def like_review(request, review_id):
+    try:
+        review = Review.objects.get(id=review_id)
+    except Review.DoesNotExist:
+        return Response({'error': 'Review not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    review.likes += 1
+    review.save()
+    return Response({'likes': review.likes}, status=status.HTTP_200_OK)

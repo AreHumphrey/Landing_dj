@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Получение элементов из DOM
     const heart = document.getElementById('heart');
     const modal = document.getElementById("modal");
     const loginForm = document.getElementById("login-form");
@@ -16,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let reviewToPost = '';
 
-    // Функция для показа модального окна с указанным контентом
     function showModal(content) {
         modal.style.display = "block";
         loginForm.style.display = "none";
@@ -26,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
         content.style.display = "block";
     }
 
-    // Обработчик события клика по элементу heart
     heart.addEventListener('click', function () {
         heart.innerHTML = `
             <svg width="90" height="90" viewBox="0 0 24 24" fill="#335D2D" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     });
 
-    // Обработчик события клика по кнопке submitBtn
     submitBtn.onclick = function (event) {
         if (reviewTextarea.value.trim() !== "") {
             event.preventDefault();
@@ -44,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // Обработчик события клика по кнопке loginButton
     loginButton.onclick = async function (event) {
         event.preventDefault();
         const email = document.getElementById('email').value;
@@ -55,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({email, password})
         });
 
         if (response.ok) {
@@ -63,8 +58,39 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('access_token', data.access);
             localStorage.setItem('refresh_token', data.refresh);
 
+            const userResponse = await fetch('/api/user/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${data.access}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (userResponse.ok) {
+                const userData = await userResponse.json();
+                localStorage.setItem('user_name', userData.name);
+            }
+
             if (reviewToPost !== '') {
-                addReview({ name: 'ФИО', review: reviewToPost });
+                const userName = localStorage.getItem('user_name');
+                const newReview = {
+                    user: { name: userName },
+                    content: reviewToPost,
+                    likes: 0,
+                    id: new Date().getTime() // Temporary ID for client-side only
+                };
+                addReview(newReview);
+
+                const accessToken = localStorage.getItem('access_token');
+                await fetch('/api/review/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content: reviewToPost })
+                });
+
                 reviewToPost = '';
                 document.getElementById('review-form').reset();
                 showModal(reviewModalContent);
@@ -76,7 +102,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // Обработчик события клика по кнопке registerButton
     registerButton.onclick = async function (event) {
         event.preventDefault();
         const name = document.getElementById('name').value;
@@ -107,43 +132,71 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // Обработчик события клика по ссылке showRegisterLink
     showRegisterLink.onclick = function () {
         showModal(registerForm);
     };
 
-    // Обработчик события клика по ссылке showLoginLink
     showLoginLink.onclick = function () {
         showModal(loginForm);
     };
 
-    // Обработчики событий клика по кнопкам закрытия модального окна
     for (let i = 0; i < closeButtons.length; i++) {
         closeButtons[i].onclick = function () {
             modal.style.display = "none";
         };
     }
 
-    // Закрытие модального окна при клике вне его области
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
     };
 
-    // Тестовые данные для комментариев
-    const testReviews = [
-        {
-            name: 'Иван Иванов',
-            review: 'Культура и традиции Улан-Удэ впечатляют сочетанием современных зданий и древних буддийских храмов. Этот город является одним из самых уникальных и культурно насыщенных мест России.'
-        },
-        {
-            name: 'Мария Петрова',
-            review: 'Улан-Удэ впечатляет своим сочетанием современных зданий и древних буддийских храмов. Этот город является одним из самых уникальных и культурно насыщенных мест России.'
-        }
-    ];
+    document.addEventListener('click', function (event) {
+        if (event.target.closest('.like-icon')) {
+            const likeIcon = event.target.closest('.like-icon');
+            const reviewId = likeIcon.getAttribute('data-review-id');
+            const accessToken = localStorage.getItem('access_token');
 
-    // Функция для добавления отзывов на страницу
+            if (!accessToken) {
+                showModal(loginForm);
+                return;
+            }
+
+            fetch(`/api/review/${reviewId}/like/`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        showModal(loginForm);
+                        throw new Error('Unauthorized');
+                    }
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.likes !== undefined) {
+                    const likeCount = likeIcon.previousElementSibling;
+                    likeCount.textContent = data.likes;
+                    likeIcon.innerHTML = `
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#335D2D" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+
     function addReview(reviewData) {
         const reviewElement = document.createElement('div');
         reviewElement.classList.add('review');
@@ -163,23 +216,49 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="review-content">
                 <strong>${reviewData.name}</strong>
                 <p>${reviewData.review}</p>
+                <div class="like-container">
+                    <span class="like-count">${reviewData.likes}</span>
+                    <span class="like-icon" data-review-id="${reviewData.id}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                                  stroke="#335D2D" stroke-width="2"/>
+                        </svg>
+                    </span>
+                </div>
             </div>
         `;
 
         document.getElementById('reviews-container').appendChild(reviewElement);
     }
 
-    // Добавление тестовых отзывов на страницу
-    testReviews.forEach(reviewData => {
-        addReview(reviewData);
-    });
+    async function loadReviews() {
+        const response = await fetch('/api/review/');
+        const reviews = await response.json();
+        reviews.forEach(review => {
+            addReview({name: review.user.name, review: review.content, likes: review.likes, id: review.id});
+        });
+    }
 
-    // Обработчик события отправки формы отзыва
-    document.getElementById('review-form').addEventListener('submit', function (event) {
+    loadReviews();
+
+    document.getElementById('review-form').addEventListener('submit', async function (event) {
         event.preventDefault();
-        const name = 'ФИО';
+        const name = localStorage.getItem('user_name');
         const review = document.getElementById('review').value;
-        addReview({ name, review });
+
+        const newReview = {name, review, likes: 0, id: new Date().getTime()};
+        addReview(newReview);
+
+        const accessToken = localStorage.getItem('access_token');
+        const response = await fetch('/api/review/', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content: review })
+        });
+
         document.getElementById('review-form').reset();
     });
 });

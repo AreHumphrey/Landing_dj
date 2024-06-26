@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 class User(AbstractUser):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -27,7 +26,9 @@ class User(AbstractUser):
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
+    likes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'Review by {self.user.name} on {self.created_at}'
+        return self.content

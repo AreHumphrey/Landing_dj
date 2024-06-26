@@ -11,4 +11,5 @@ urlpatterns = [
     path('api/register/', RegisterView.as_view(), name='api_register'),
     path('api/login/', LoginView.as_view(), name='api_login'),
     path('api/reviews/', ReviewListCreateView.as_view(), name='api_reviews'),
+    path('api/review/<int:review_id>/like/', views.like_review, name='like_review'),
 ]
