@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const showLoginLink = document.getElementById("show-login");
     const closeButtons = document.getElementsByClassName("close");
     const reviewTextarea = document.getElementById("review");
+    const reviewsContainer = document.getElementById('reviews-container');
 
     let reviewToPost = '';
 
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({email, password})
+            body: JSON.stringify({ email, password })
         });
 
         if (response.ok) {
@@ -72,17 +73,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (reviewToPost !== '') {
-                const userName = localStorage.getItem('user_name');
-                const newReview = {
-                    user: { name: userName },
-                    content: reviewToPost,
-                    likes: 0,
-                    id: new Date().getTime() // Temporary ID for client-side only
-                };
-                addReview(newReview);
-
                 const accessToken = localStorage.getItem('access_token');
-                await fetch('/api/review/', {
+                const reviewResponse = await fetch('/api/review/', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
@@ -91,9 +83,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     body: JSON.stringify({ content: reviewToPost })
                 });
 
-                reviewToPost = '';
-                document.getElementById('review-form').reset();
-                showModal(reviewModalContent);
+                if (reviewResponse.ok) {
+                    const savedReview = await reviewResponse.json();
+                    addReview({
+                        user: { name: localStorage.getItem('user_name') },
+                        content: savedReview.content,
+                        likes: savedReview.likes,
+                        id: savedReview.id
+                    });
+
+                    reviewToPost = '';
+                    document.getElementById('review-form').reset();
+                    showModal(reviewModalContent);
+                }
             } else {
                 showModal(likeModalContent);
             }
@@ -214,8 +216,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 </svg>
             </div>
             <div class="review-content">
-                <strong>${reviewData.name}</strong>
-                <p>${reviewData.review}</p>
+                <strong>${reviewData.user.name}</strong>
+                <p>${reviewData.content}</p>
                 <div class="like-container">
                     <span class="like-count">${reviewData.likes}</span>
                     <span class="like-icon" data-review-id="${reviewData.id}">
@@ -232,10 +234,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function loadReviews() {
+        reviewsContainer.innerHTML = ''; // Clear existing reviews
         const response = await fetch('/api/review/');
         const reviews = await response.json();
         reviews.forEach(review => {
-            addReview({name: review.user.name, review: review.content, likes: review.likes, id: review.id});
+            addReview({
+                user: { name: review.user_name },
+                content: review.content,
+                likes: review.likes,
+                id: review.id
+            });
         });
     }
 
@@ -246,9 +254,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const name = localStorage.getItem('user_name');
         const review = document.getElementById('review').value;
 
-        const newReview = {name, review, likes: 0, id: new Date().getTime()};
-        addReview(newReview);
-
         const accessToken = localStorage.getItem('access_token');
         const response = await fetch('/api/review/', {
             method: 'POST',
@@ -258,6 +263,16 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({ content: review })
         });
+
+        if (response.ok) {
+            const savedReview = await response.json();
+            addReview({
+                user: { name },
+                content: savedReview.content,
+                likes: savedReview.likes,
+                id: savedReview.id
+            });
+        }
 
         document.getElementById('review-form').reset();
     });

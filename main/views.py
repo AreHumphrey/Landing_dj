@@ -9,7 +9,7 @@ from .forms import UserRegisterForm, UserLoginForm, ReviewForm
 from .models import Review
 from .serializers import UserSerializer, ReviewSerializer
 from django.contrib.auth import get_user_model
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -119,3 +119,10 @@ def like_review(request, review_id):
     review.likes += 1
     review.save()
     return Response({'likes': review.likes}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def current_user(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
