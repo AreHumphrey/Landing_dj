@@ -5,6 +5,8 @@ from .models import Review
 
 User = get_user_model()
 
+
+# Сериализатор для модели пользователя
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -12,15 +14,17 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
+        # Создание нового пользователя
         user = User.objects.create_user(
             name=validated_data['name'],
             email=validated_data['email'],
             password=validated_data['password'],
-            username=validated_data['email']
+            username=validated_data['email']  # Использование email в качестве имени пользователя
         )
         return user
 
     def to_representation(self, instance):
+        # Представление данных пользователя вместе с JWT-токенами
         refresh = RefreshToken.for_user(instance)
         return {
             'id': instance.id,
@@ -30,6 +34,8 @@ class UserSerializer(serializers.ModelSerializer):
             'access': str(refresh.access_token),
         }
 
+
+# Сериализатор для модели отзывов
 class ReviewSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.name', read_only=True)
 

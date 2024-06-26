@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Получение элементов из DOM
     const heart = document.getElementById('heart');
     const modal = document.getElementById("modal");
     const loginForm = document.getElementById("login-form");
@@ -14,8 +15,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const reviewTextarea = document.getElementById("review");
     const reviewsContainer = document.getElementById('reviews-container');
 
+    // Переменная для хранения текста отзыва до публикации
     let reviewToPost = '';
 
+    // Функция для показа модального окна с указанным контентом
     function showModal(content) {
         modal.style.display = "block";
         loginForm.style.display = "none";
@@ -25,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         content.style.display = "block";
     }
 
+    // Обработчик события клика по элементу heart
     heart.addEventListener('click', function () {
         heart.innerHTML = `
             <svg width="90" height="90" viewBox="0 0 24 24" fill="#335D2D" xmlns="http://www.w3.org/2000/svg">
@@ -33,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     });
 
+    // Обработчик события клика по кнопке отправки формы
     submitBtn.onclick = function (event) {
         if (reviewTextarea.value.trim() !== "") {
             event.preventDefault();
@@ -41,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    // Обработчик события клика по кнопке логина
     loginButton.onclick = async function (event) {
         event.preventDefault();
         const email = document.getElementById('email').value;
@@ -104,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    // Обработчик события клика по кнопке регистрации
     registerButton.onclick = async function (event) {
         event.preventDefault();
         const name = document.getElementById('name').value;
@@ -134,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    // Обработчики событий для переключения между формами логина и регистрации
     showRegisterLink.onclick = function () {
         showModal(registerForm);
     };
@@ -142,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
         showModal(loginForm);
     };
 
+    // Обработчики событий для закрытия модального окна
     for (let i = 0; i < closeButtons.length; i++) {
         closeButtons[i].onclick = function () {
             modal.style.display = "none";
@@ -154,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    // Обработчик события клика по иконке лайка
     document.addEventListener('click', function (event) {
         if (event.target.closest('.like-icon')) {
             const likeIcon = event.target.closest('.like-icon');
@@ -199,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Функция для добавления отзыва в DOM
     function addReview(reviewData) {
         const reviewElement = document.createElement('div');
         reviewElement.classList.add('review');
@@ -233,8 +244,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('reviews-container').appendChild(reviewElement);
     }
 
+    // Функция для загрузки всех отзывов из базы данных и их отображения
     async function loadReviews() {
-        reviewsContainer.innerHTML = ''; // Clear existing reviews
+        reviewsContainer.innerHTML = ''; // Очистка существующих отзывов
         const response = await fetch('/api/review/');
         const reviews = await response.json();
         reviews.forEach(review => {
@@ -249,6 +261,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     loadReviews();
 
+    // Обработчик отправки формы отзыва
     document.getElementById('review-form').addEventListener('submit', async function (event) {
         event.preventDefault();
         const name = localStorage.getItem('user_name');

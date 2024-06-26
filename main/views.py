@@ -16,6 +16,7 @@ from rest_framework import status
 User = get_user_model()
 
 
+# Отображение главной страницы с отзывами и формами регистрации, входа и добавления отзыва
 def index(request):
     reviews = Review.objects.all()
     register_form = UserRegisterForm()
@@ -29,6 +30,7 @@ def index(request):
     })
 
 
+# Обработка регистрации пользователя
 def register_view(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -41,6 +43,7 @@ def register_view(request):
     return render(request, 'main/index.html', {'register_form': form})
 
 
+# Обработка входа пользователя
 def login_view(request):
     if request.method == 'POST':
         form = UserLoginForm(request, data=request.POST)
@@ -56,6 +59,7 @@ def login_view(request):
     return render(request, 'main/index.html', {'login_form': form})
 
 
+# Обработка добавления отзыва, доступна только авторизованным пользователям
 @login_required
 def add_review(request):
     if request.method == 'POST':
@@ -70,12 +74,14 @@ def add_review(request):
     return render(request, 'main/index.html', {'review_form': form})
 
 
+# API для регистрации пользователя
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (permissions.AllowAny,)
     serializer_class = UserSerializer
 
 
+# API для входа пользователя
 class LoginView(APIView):
     permission_classes = (permissions.AllowAny,)
 
@@ -100,6 +106,7 @@ class LoginView(APIView):
         return Response({'error': 'Invalid Credentials'}, status=400)
 
 
+# API для просмотра и добавления отзывов
 class ReviewListCreateView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
@@ -109,6 +116,7 @@ class ReviewListCreateView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
+# API для лайков отзывов
 @api_view(['POST'])
 def like_review(request, review_id):
     try:
@@ -121,6 +129,7 @@ def like_review(request, review_id):
     return Response({'likes': review.likes}, status=status.HTTP_200_OK)
 
 
+# API для получения информации о текущем пользователе
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def current_user(request):
